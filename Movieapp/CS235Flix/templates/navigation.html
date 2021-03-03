@@ -1,0 +1,57 @@
+<nav id="nav">
+  <img id="logo" src="{{ url_for('static', filename='n.jpg') }}" />
+
+  <h2 id="nav-header">
+    {% if 'username' in session %} Hello, {{ session['username'] }} {%
+    endif %}
+  </h2>
+  <a class="btn-nav" href="{{ url_for('home_bp.home') }}">Home</a>
+  <a class="btn-nav" href="{{ url_for('authentication_bp.register') }}">Register</a>
+  <a class="btn-nav" href="{{ url_for('authentication_bp.login') }}">Login</a>
+  <a class="btn-nav" href="{{ url_for('authentication_bp.logout') }}">Logout</a>
+
+  <div>
+    <h3>
+      <a class="btn-nav" href="{{ url_for('movies_bp.movies_by_variables') }}">
+        Browse movies
+      </a>
+    </h3>
+  </div>
+    <form action="{{ url_for('movies_bp.movies_by_variables') }}" method="get">
+        <div>
+            <b>Actor:</b>
+            <select name="actor">
+                <option value="">-</option>
+                {% for actor in actor_urls.keys() %}
+                <option value="{{ actor }}" {% if actor == actor_name %}selected{% endif %}>{{actor}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <b>Director:</b>
+            <select name="director">
+                <option value="">-</option>
+                {% for director in director_urls.keys() %}
+                <option value="{{ director }}" {% if director == director_name %}selected{% endif %}>{{ director }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <b>Genre:</b>
+            <select name="genre">
+                <option value="">-</option>
+                {% for genre in genre_urls.keys() %}
+                <option value="{{ genre }}" {% if genre == genre_name %}selected{% endif %}>{{genre}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+
+        <button class="btn-general" type="submit">Search</button>
+
+    </form>
+
+  <div id="nav-footer">
+    COMPSCI 235 Software Development Methodologies
+  </div>
+</nav>

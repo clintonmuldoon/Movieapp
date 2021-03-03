@@ -1,0 +1,120 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<main id="main">
+    <header id="movie-header">
+        <h1>{% if genre_name %}
+             {{ genre_name }} Movies
+            {% elif actor_name %}
+            Movies Starring {{ actor_name }}
+            {% elif director_name %}
+
+            Movies Directed by {{ director_name }}
+
+            {% else %}
+            All
+            Movies
+            {% endif %}</h1>
+    </header>
+
+    <nav style="clear:both">
+            <div style="float:left">
+                {% if first_article_url is not none %}
+                    <button class="btn-general" onclick="location.href='{{first_article_url}}'">First</button>
+                {% else %}
+                    <button class="btn-general-disabled" disabled>First</button>
+                {% endif %}
+                {% if prev_article_url is not none %}
+                    <button class="btn-general" onclick="location.href='{{prev_article_url}}'">Previous</button>
+                {% else %}
+                    <button class="btn-general-disabled" disabled>Previous</button>
+                {% endif %}
+            </div>
+            <div style="float:right">
+                {% if next_article_url is not none %}
+                    <button class="btn-general" onclick="location.href='{{next_article_url}}'">Next</button>
+                {% else %}
+                    <button class="btn-general-disabled" disabled>Next</button>
+                {% endif %}
+                {% if last_article_url is not none %}
+                    <button class="btn-general" onclick="location.href='{{last_article_url}}'">Last</button>
+                {% else %}
+                    <button class="btn-general-disabled" disabled>Last</button>
+                {% endif %}
+            </div>
+        </nav>
+<br/>
+    <br/>
+    <div class="allmovies">
+    {% for movie in movies %}
+    <div class="box">
+        <h2>{{movie.title}}</h2>
+        <p>{{movie.description}}</p>
+        <p>
+            <b>Year</b>: {{movie.year}}&nbsp;<b>Runtime minutes</b>: {{movie.runtime_minutes}}&nbsp;<b>Rating</b>: {{movie.rating}}&nbsp;<b>Votes</b>:
+            {{movie.votes}}&nbsp;<b>Revenue millions</b>: {{movie.revenue_millions}}&nbsp;<b>Metascore</b>: {{movie.meta_score}}
+        </p>
+
+        <div style="float:left">
+            {% for director  in movie.directors %}
+                <button class="btn-general" onclick="location.href='{{ director_urls[director.name] }}'">{{ director.name }}</button>
+            {% endfor %}
+        </div>
+        <div style="clear:left">
+            {% for genre in movie.genres %}
+            <button class="btn-general" onclick="location.href='{{ genre_urls[genre.name] }}'">{{ genre.name }}</button>
+            {% endfor %}
+        </div>
+        <div style="clear:both">
+            {% for actor in movie.actors %}
+                <button class="btn-general" onclick="location.href='{{ actor_urls[actor.name] }}'">{{ actor.name }}</button>
+            {% endfor %}
+        </div>
+        <br/>
+        <div style="float:right">
+            {% if movie.reviews|length > 0 and article.id != show_reviews_for_movie %}
+                <button class="btn-general" onclick="location.href='{{ movie.view_review_url }}'">{{ movie.reviews|length }} reviews</button>
+            {% endif %}
+            <button class="btn-general" onclick="location.href='{{ movie.add_review_url }}'">Review</button>
+        </div>
+        {% if movie.id == show_reviews_for_movie %}
+        <div style="clear:both">
+            {% for review in movie.reviews %}
+                <p>{{review.review}}, by {{review.username}}, {{review.timestamp}}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+        {% endfor %}
+    </div>
+    <footer>
+        <nav style="clear:both">
+            <div style="float:left">
+                {% if first_article_url is not none %}
+                    <button class="btn-general" onclick="location.href='{{first_article_url}}'">First</button>
+                {% else %}
+                    <button class="btn-general-disabled" disabled>First</button>
+                {% endif %}
+                {% if prev_article_url is not none %}
+                    <button class="btn-general" onclick="location.href='{{prev_article_url}}'">Previous</button>
+                {% else %}
+                    <button class="btn-general-disabled" disabled>Previous</button>
+                {% endif %}
+            </div>
+            <div style="float:right">
+                {% if next_article_url is not none %}
+                    <button class="btn-general" onclick="location.href='{{next_article_url}}'">Next</button>
+                {% else %}
+                    <button class="btn-general-disabled" disabled>Next</button>
+                {% endif %}
+                {% if last_article_url is not none %}
+                    <button class="btn-general" onclick="location.href='{{last_article_url}}'">Last</button>
+                {% else %}
+                    <button class="btn-general-disabled" disabled>Last</button>
+                {% endif %}
+            </div>
+        </nav>
+    </footer>
+</main>
+{% endblock %}
